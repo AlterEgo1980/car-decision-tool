@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מחשבון החלטה: רכב</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-lg">
+        <h1 class="text-2xl font-bold text-center mb-6 text-blue-900">מנתח כדאיות רכב</h1>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-bold">מחיר רכב: <span id="priceVal">180,000</span> ₪</label>
+                <input type="range" id="price" min="100000" max="250000" step="5000" value="180000" class="w-full">
+            </div>
+            <div>
+                <label class="block text-sm font-bold">ריבית היוון: <span id="intVal">5</span>%</label>
+                <input type="range" id="interest" min="0" max="10" step="0.5" value="5" class="w-full">
+            </div>
+        </div>
+
+        <div class="my-8 h-64">
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <div id="results" class="grid grid-cols-3 gap-2 text-center text-sm">
+            </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        let chart;
+
+        function update() {
+            const P = Number(document.getElementById('price').value);
+            const r = Number(document.getElementById('interest').value) / 100;
+            const years = 3;
+            
+            document.getElementById('priceVal').innerText = P.toLocaleString();
+            document.getElementById('intVal').innerText = (r*100).toFixed(1);
+
+            // חישובים מהמודל שלך
+            const lostOpp = P * (Math.pow(1 + r, years) - 1);
+            const purchaseTCO = (P * 0.40) + (5500 + 2000 + 2400) * years + lostOpp;
+            const leaseTCO = 26000 + (2500 * 12 * years) + (5500 + 2400) * years;
+            const taxiTCO = 2139 * 12 * years;
+
+            const data = [Math.round(purchaseTCO/36), Math.round(leaseTCO/36), Math.round(taxiTCO/36)];
+
+            if (chart) chart.destroy();
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['רכישה', 'ליסינג', 'מוניות'],
+                    datasets: [{
+                        label: 'עלות חודשית ממוצעת',
+                        data: data,
+                        backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            document.getElementById('results').innerHTML = `
+                <div class="p-2 bg-blue-50 rounded">רכישה<br><b>₪${data[0]}</b></div>
+                <div class="p-2 bg-purple-50 rounded">ליסינג<br><b>₪${data[1]}</b></div>
+                <div class="p-2 bg-green-50 rounded">מוניות<br><b>₪${data[2]}</b></div>
+            `;
+        }
+
+        document.querySelectorAll('input').forEach(i => i.addEventListener('input', update));
+        update();
+    </script>
+</body>
+</html>
