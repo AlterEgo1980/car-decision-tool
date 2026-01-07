@@ -3,46 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מחשבון TCO רכב - מדדים סופיים</title>
+    <title>מחשבון TCO רכב - גרסה סופית למשא ומתן</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap');
         body { font-family: 'Assistant', sans-serif; background-color: #f1f5f9; }
         .input-field { width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px; font-weight: bold; }
+        .calc-card { background: white; padding: 1.5rem; border-radius: 1rem; shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); border: 1px solid #e2e8f0; }
     </style>
 </head>
 <body class="p-4 md:p-8">
     <div class="max-w-5xl mx-auto space-y-6">
 
-        <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
-            <h2 class="text-lg font-black mb-4 border-b pb-2 text-slate-800">⚙️ הגדרות ועלויות יסוד</h2>
+        <div class="calc-card">
+            <h2 class="text-lg font-black mb-4 border-b pb-2 text-slate-800 uppercase italic">⚙️ הגדרות ועלויות יסוד</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="space-y-3">
                     <h3 class="font-bold text-blue-700 underline text-sm">נתונים כלליים</h3>
-                    <div><label class="block text-xs font-bold mb-1 uppercase">שנים לחישוב</label><input type="number" id="years" value="3" class="input-field"></div>
-                    <div><label class="block text-xs font-bold mb-1 uppercase">ריבית שנתית (%)</label><input type="number" id="interest" value="5" step="0.5" class="input-field"></div>
-                    <div><label class="block text-xs font-bold mb-1 uppercase text-red-600">ירידת ערך שנתית (%)</label><input type="number" id="depRate" value="12" class="input-field text-red-600 border-red-200"></div>
+                    <div><label class="block text-[11px] font-bold mb-1 uppercase text-slate-500">שנים לחישוב</label><input type="number" id="years" value="3" class="input-field"></div>
+                    <div><label class="block text-[11px] font-bold mb-1 uppercase text-slate-500">ריבית שנתית (%)</label><input type="number" id="interest" value="5" step="0.5" class="input-field"></div>
+                    <div><label class="block text-[11px] font-bold mb-1 uppercase text-red-600">ירידת ערך שנתית (%)</label><input type="number" id="depRate" value="12" class="input-field text-red-600 border-red-200"></div>
                 </div>
                 <div class="space-y-3">
                     <h3 class="font-bold text-blue-700 underline text-sm">הוצאות שנתיות</h3>
                     <div class="space-y-2">
-                        <div class="flex items-center gap-2"><div class="flex-1 text-[10px] font-bold">אגרה <input type="number" id="registration" value="2500" class="input-field py-1"></div><label class="flex flex-col items-center mt-4"><span class="text-[9px]">כלול?</span><input type="checkbox" id="regIncl"></label></div>
-                        <div class="flex items-center gap-2"><div class="flex-1 text-[10px] font-bold">ביטוח <input type="number" id="insurance" value="5500" class="input-field py-1"></div><label class="flex flex-col items-center mt-4"><span class="text-[9px]">כלול?</span><input type="checkbox" id="insIncl"></label></div>
-                        <div class="flex items-center gap-2"><div class="flex-1 text-[10px] font-bold">טיפולים <input type="number" id="maintenance" value="2000" class="input-field py-1"></div><label class="flex flex-col items-center mt-4"><span class="text-[9px]">כלול?</span><input type="checkbox" id="maintIncl"></label></div>
+                        <div class="flex items-center gap-2">
+                            <div class="flex-1 text-[10px] font-bold">אגרה <input type="number" id="registration" value="2500" class="input-field py-1"></div>
+                            <label class="flex flex-col items-center mt-4 min-w-[70px] text-center">
+                                <span class="text-[9px] text-purple-700 font-bold leading-none mb-1">כלול<br>בליסינג?</span>
+                                <input type="checkbox" id="regIncl" class="w-4 h-4 cursor-pointer">
+                            </label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="flex-1 text-[10px] font-bold">ביטוח <input type="number" id="insurance" value="5500" class="input-field py-1"></div>
+                            <label class="flex flex-col items-center mt-4 min-w-[70px] text-center">
+                                <span class="text-[9px] text-purple-700 font-bold leading-none mb-1">כלול<br>בליסינג?</span>
+                                <input type="checkbox" id="insIncl" class="w-4 h-4 cursor-pointer">
+                            </label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="flex-1 text-[10px] font-bold">טיפולים <input type="number" id="maintenance" value="2000" class="input-field py-1"></div>
+                            <label class="flex flex-col items-center mt-4 min-w-[70px] text-center">
+                                <span class="text-[9px] text-purple-700 font-bold leading-none mb-1">כלול<br>בליסינג?</span>
+                                <input type="checkbox" id="maintIncl" class="w-4 h-4 cursor-pointer">
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="space-y-3">
                     <h3 class="font-bold text-blue-700 underline text-sm">הוצאות דלק</h3>
-                    <div><label class="block text-xs font-bold mb-1 uppercase">נסועה שנתית</label><input type="number" id="kmYear" value="20000" class="input-field bg-blue-50"></div>
-                    <div><label class="block text-xs font-bold mb-1 uppercase">₪ לליטר</label><input type="number" id="gasPrice" value="7.5" step="0.1" class="input-field"></div>
-                    <div><label class="block text-xs font-bold mb-1 uppercase">ק"מ לליטר</label><input type="number" id="eff" value="18" class="input-field"></div>
+                    <div><label class="block text-[11px] font-bold mb-1 uppercase text-slate-500">נסועה שנתית (ק"מ)</label><input type="number" id="kmYear" value="20000" class="input-field bg-blue-50"></div>
+                    <div><label class="block text-[11px] font-bold mb-1 uppercase text-slate-500">₪ לליטר דלק</label><input type="number" id="gasPrice" value="7.5" step="0.1" class="input-field"></div>
+                    <div><label class="block text-[11px] font-bold mb-1 uppercase text-slate-500">צריכה (ק"מ לליטר)</label><input type="number" id="eff" value="18" class="input-field"></div>
                 </div>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-            <div class="bg-blue-800 p-6 rounded-3xl text-white shadow-xl flex flex-col"><h3 class="text-center font-black text-xl mb-4 italic">רכישה פרטית</h3><div class="bg-white/10 p-10 rounded-2xl border border-white/20 text-center flex-1 flex flex-col justify-center"><label class="block text-xs opacity-80 mb-2 font-bold uppercase">מחיר רכישה מלא</label><input type="number" id="price" value="180000" class="bg-transparent text-5xl font-black text-center w-full focus:outline-none"></div></div>
-            <div class="bg-purple-800 p-6 rounded-3xl text-white shadow-xl space-y-4"><h3 class="text-center font-black text-xl italic">ליסינג תפעולי</h3><div class="grid grid-cols-1 gap-3"><div class="bg-white/10 p-3 rounded-xl border border-white/20 text-center"><label class="block text-[10px] font-bold">מקדמה</label><input type="number" id="lDown" value="26000" class="bg-transparent text-2xl font-black text-center w-full focus:outline-none"></div><div class="bg-white/10 p-3 rounded-xl border border-white/20 text-center"><label class="block text-[10px] font-bold">חודשי</label><input type="number" id="lMonthly" value="2500" class="bg-transparent text-2xl font-black text-center w-full focus:outline-none"></div><div class="bg-white/10 p-3 rounded-xl border border-white/20 text-center"><label class="block text-[10px] font-bold text-purple-200">רכישה בסוף (%)</label><input type="number" id="buyoutRate" value="50" class="bg-transparent text-2xl font-black text-center w-full focus:outline-none"></div></div></div>
+            <div class="bg-blue-800 p-6 rounded-3xl text-white shadow-xl flex flex-col">
+                <h3 class="text-center font-black text-xl mb-4 italic uppercase">רכישה פרטית</h3>
+                <div class="bg-white/10 p-10 rounded-2xl border border-white/20 text-center flex-1 flex flex-col justify-center">
+                    <label class="block text-xs opacity-80 mb-2 font-bold uppercase">מחיר רכישה מלא (₪)</label>
+                    <input type="number" id="price" value="180000" class="bg-transparent text-5xl font-black text-center w-full focus:outline-none">
+                </div>
+            </div>
+            <div class="bg-purple-800 p-6 rounded-3xl text-white shadow-xl space-y-4">
+                <h3 class="text-center font-black text-xl italic uppercase">ליסינג תפעולי</h3>
+                <div class="grid grid-cols-1 gap-3">
+                    <div class="bg-white/10 p-3 rounded-xl border border-white/20 text-center">
+                        <label class="block text-[10px] font-bold opacity-80">מקדמה (₪)</label>
+                        <input type="number" id="lDown" value="26000" class="bg-transparent text-2xl font-black text-center w-full focus:outline-none">
+                    </div>
+                    <div class="bg-white/10 p-3 rounded-xl border border-white/20 text-center">
+                        <label class="block text-[10px] font-bold opacity-80">תשלום חודשי (₪)</label>
+                        <input type="number" id="lMonthly" value="2500" class="bg-transparent text-2xl font-black text-center w-full focus:outline-none">
+                    </div>
+                    <div class="bg-white/10 p-3 rounded-xl border border-white/20 text-center">
+                        <label class="block text-[10px] font-bold opacity-80">אופציית רכישה בסוף (%)</label>
+                        <input type="number" id="buyoutRate" value="50" class="bg-transparent text-2xl font-black text-center w-full focus:outline-none">
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
@@ -56,24 +97,29 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100 font-bold">
                     <tr>
-                        <td class="p-5 text-sm">שווי רכב לאחר שלוש שנים <br><span class="text-[10px] text-slate-400 font-normal">(נכס שנשאר ביד)</span></td>
+                        <td class="p-5 text-sm">שווי רכב לאחר שלוש שנים <br><span class="text-[10px] text-slate-400 font-normal">(יתרה פוחתת של 12% מהערך הקודם בכל שנה)</span></td>
                         <td id="pResale" class="p-5 text-center text-green-600 text-xl">₪0</td>
                         <td id="lResale" class="p-5 text-center text-green-600 text-xl">₪0</td>
                     </tr>
                     <tr class="bg-slate-50">
-                        <td class="p-5 text-sm">עלות לאחר שלוש שנים (כולל רכישה) <br><span class="text-[10px] text-slate-400 font-normal">(סה"כ תזרים מזומנים שיצא מהכיס)</span></td>
+                        <td class="p-5 text-sm font-bold">עלות לאחר שלוש שנים (Cash Out) <br><span class="text-[10px] text-slate-400 font-normal">(סה"כ תזרים מזומנים שיצא מהכיס כולל רכישה)</span></td>
                         <td id="pOut" class="p-5 text-center text-slate-700 text-xl">₪0</td>
                         <td id="lOut" class="p-5 text-center text-slate-700 text-xl">₪0</td>
                     </tr>
                     <tr>
-                        <td class="p-5 text-sm">רווחים אבודים (היוון) <br><span class="text-[10px] text-slate-400 font-normal">(הפסד תשואה על ההון המושקע)</span></td>
+                        <td class="p-5 text-sm">רווחים אבודים (היוון) <br><span class="text-[10px] text-slate-400 font-normal">(ריבית דריבית של 5% על ההון המושקע)</span></td>
                         <td id="pLost" class="p-5 text-center text-red-500 text-xl">₪0</td>
                         <td id="lLost" class="p-5 text-center text-red-500 text-xl">₪0</td>
                     </tr>
-                    <tr class="bg-blue-900 text-white">
-                        <td class="p-5 text-sm font-black italic underline">סה"כ עלות (TCO) בהתחשב ברווחים אבודים <br><span class="text-[10px] text-blue-300 font-normal">(המדד הסופי להחלטה)</span></td>
+                    <tr class="bg-blue-900 text-white border-t-4 border-slate-700">
+                        <td class="p-5 text-sm font-black italic underline">סה"כ עלות (TCO) <br><span class="text-[10px] text-blue-300 font-normal">(עלויות + היוון - שווי נכס בסוף)</span></td>
                         <td id="pFinal" class="p-5 text-center text-2xl font-black">₪0</td>
                         <td id="lFinal" class="p-5 text-center text-2xl font-black">₪0</td>
+                    </tr>
+                    <tr class="bg-green-100 text-green-900 border-t-4 border-green-300">
+                        <td class="p-5 text-sm font-black uppercase tracking-tight">עלות חודשית ריאלית ממוצעת (TCO חודשי) <br><span class="text-[10px] text-green-700 font-normal">(זה המדד להשוואה מול הסוכן)</span></td>
+                        <td id="pMonthlyTCO" class="p-5 text-center text-3xl font-black border-l-2 border-green-200">₪0</td>
+                        <td id="lMonthlyTCO" class="p-5 text-center text-3xl font-black">₪0</td>
                     </tr>
                 </tbody>
             </table>
@@ -82,42 +128,42 @@
 
     <script>
         function update() {
-            const years = Number(document.getElementById('years').value);
-            const r = Number(document.getElementById('interest').value) / 100;
-            const depRate = Number(document.getElementById('depRate').value) / 100;
-            const price = Number(document.getElementById('price').value);
-            const km = Number(document.getElementById('kmYear').value);
-            const gasPrice = Number(document.getElementById('gasPrice').value);
-            const eff = Number(document.getElementById('eff').value);
+            const years = Number(document.getElementById('years').value) || 0;
+            const r = (Number(document.getElementById('interest').value) || 0) / 100;
+            const depRate = (Number(document.getElementById('depRate').value) || 0) / 100;
+            const price = Number(document.getElementById('price').value) || 0;
+            const km = Number(document.getElementById('kmYear').value) || 0;
+            const gasPrice = Number(document.getElementById('gasPrice').value) || 0;
+            const eff = Number(document.getElementById('eff').value) || 1;
 
-            const reg = Number(document.getElementById('registration').value);
-            const ins = Number(document.getElementById('insurance').value);
-            const maint = Number(document.getElementById('maintenance').value);
+            const reg = Number(document.getElementById('registration').value) || 0;
+            const ins = Number(document.getElementById('insurance').value) || 0;
+            const maint = Number(document.getElementById('maintenance').value) || 0;
             
             const regIncl = document.getElementById('regIncl').checked;
             const insIncl = document.getElementById('insIncl').checked;
             const maintIncl = document.getElementById('maintIncl').checked;
 
-            const lDown = Number(document.getElementById('lDown').value);
-            const lMonthly = Number(document.getElementById('lMonthly').value);
-            const lBuyout = price * (Number(document.getElementById('buyoutRate').value) / 100);
+            const lDown = Number(document.getElementById('lDown').value) || 0;
+            const lMonthly = Number(document.getElementById('lMonthly').value) || 0;
+            const lBuyout = price * ((Number(document.getElementById('buyoutRate').value) || 0) / 100);
 
             const totalGas = (km / eff) * gasPrice * years;
             const totalFixed = (reg + ins + maint) * years;
 
-            // 1. שווי רכב (זהה לשני המסלולים)
-            const resaleVal = price * (1 - (depRate * years));
+            // 1. שווי רכב (יתרה פוחתת)
+            const resaleVal = price * Math.pow(1 - depRate, years);
 
-            // 2. עלות לאחר 3 שנים (כולל רכישה)
-            const pOut = price + totalFixed + totalGas; // ברכישה: מחיר מלא + אחזקה
+            // 2. עלות לאחר 3 שנים (Cash Out)
+            const pOut = price + totalFixed + totalGas;
             
-            let lExtra = totalGas; // בליסינג: דלק + מה שלא כלול
+            let lExtra = totalGas;
             if (!regIncl) lExtra += reg * years;
             if (!insIncl) lExtra += ins * years;
             if (!maintIncl) lExtra += maint * years;
             const lOut = (lMonthly * 12 * years) + lDown + lExtra + lBuyout;
 
-            // 3. רווחים אבודים (היוון)
+            // 3. רווחים אבודים (היוון ריבית דריבית)
             const pLost = price * (Math.pow(1 + r, years) - 1);
             const lLost = lDown * (Math.pow(1 + r, years) - 1);
 
@@ -125,18 +171,23 @@
             const pFinal = pOut + pLost - resaleVal;
             const lFinal = lOut + lLost - resaleVal;
 
-            // עדכון תצוגה
-            document.getElementById('pResale').innerText = '₪' + Math.round(resaleVal).toLocaleString();
-            document.getElementById('lResale').innerText = '₪' + Math.round(resaleVal).toLocaleString();
-            
-            document.getElementById('pOut').innerText = '₪' + Math.round(pOut).toLocaleString();
-            document.getElementById('lOut').innerText = '₪' + Math.round(lOut).toLocaleString();
-            
-            document.getElementById('pLost').innerText = '₪' + Math.round(pLost).toLocaleString();
-            document.getElementById('lLost').innerText = '₪' + Math.round(lLost).toLocaleString();
-            
-            document.getElementById('pFinal').innerText = '₪' + Math.round(pFinal).toLocaleString();
-            document.getElementById('lFinal').innerText = '₪' + Math.round(lFinal).toLocaleString();
+            // 5. TCO חודשי
+            const months = Math.max(years * 12, 1);
+            const pMonthlyTCO = pFinal / months;
+            const lMonthlyTCO = lFinal / months;
+
+            // עדכון UI
+            const fmt = (v) => '₪' + Math.round(v).toLocaleString();
+            document.getElementById('pResale').innerText = fmt(resaleVal);
+            document.getElementById('lResale').innerText = fmt(resaleVal);
+            document.getElementById('pOut').innerText = fmt(pOut);
+            document.getElementById('lOut').innerText = fmt(lOut);
+            document.getElementById('pLost').innerText = fmt(pLost);
+            document.getElementById('lLost').innerText = fmt(lLost);
+            document.getElementById('pFinal').innerText = fmt(pFinal);
+            document.getElementById('lFinal').innerText = fmt(lFinal);
+            document.getElementById('pMonthlyTCO').innerText = fmt(pMonthlyTCO);
+            document.getElementById('lMonthlyTCO').innerText = fmt(lMonthlyTCO);
         }
 
         document.querySelectorAll('input, input[type="checkbox"]').forEach(i => i.addEventListener('input', update));
