@@ -3,53 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מנתח החלטה רכב - השוואה חזיתית</title>
+    <title>מחשבון רכב - השוואה חזיתית</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap');
-        body { font-family: 'Assistant', sans-serif; }
+        body { font-family: 'Assistant', sans-serif; background-color: #f8fafc; }
+        .input-box { border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; width: 100%; font-weight: bold; }
     </style>
 </head>
-<body class="bg-slate-100 p-4 md:p-8 text-slate-800">
+<body class="p-4 md:p-8">
     <div class="max-w-6xl mx-auto space-y-6">
         
-        <div class="bg-white p-6 rounded-2xl shadow-sm border flex flex-wrap gap-6 items-end justify-center">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 items-end">
             <div>
-                <label class="block text-xs font-bold mb-1 uppercase">שנים לחישוב</label>
-                <input type="number" id="years" value="3" class="w-20 p-2 border rounded font-bold">
+                <label class="block text-xs font-bold mb-1">שנים לחישוב</label>
+                <input type="number" id="years" value="3" class="input-box">
             </div>
             <div>
-                <label class="block text-xs font-bold mb-1 uppercase">ריבית שנתית %</label>
-                <input type="number" id="interest" value="5" step="0.5" class="w-20 p-2 border rounded font-bold">
+                <label class="block text-xs font-bold mb-1">נסועה שנתית</label>
+                <input type="number" id="kmYear" value="20000" class="input-box bg-blue-50">
             </div>
             <div>
-                <label class="block text-xs font-bold mb-1 uppercase text-red-600">ירידת ערך שנתית %</label>
-                <input type="number" id="depRate" value="12" class="w-20 p-2 border rounded font-bold text-red-600">
+                <label class="block text-xs font-bold mb-1">ריבית (%)</label>
+                <input type="number" id="interest" value="5" step="0.5" class="input-box">
             </div>
-            <div class="flex gap-4 border-r pr-6">
-                <label class="flex items-center gap-1 text-xs">
-                    <input type="checkbox" id="regIncl" class="w-4 h-4"> אגרה בליסינג
-                </label>
-                <label class="flex items-center gap-1 text-xs">
-                    <input type="checkbox" id="insIncl" class="w-4 h-4"> ביטוח בליסינג
-                </label>
-                <label class="flex items-center gap-1 text-xs">
-                    <input type="checkbox" id="maintIncl" class="w-4 h-4"> טיפולים בליסינג
-                </label>
+            <div>
+                <label class="block text-xs font-bold mb-1 text-red-600">ירידת ערך (%)</label>
+                <input type="number" id="depRate" value="12" class="input-box text-red-600">
+            </div>
+            <div class="col-span-2 space-y-2 border-r pr-4">
+                <div class="flex items-center gap-2">
+                    <input type="number" id="registration" value="2500" class="w-20 p-1 border rounded text-xs">
+                    <label class="text-[10px]"><input type="checkbox" id="regIncl"> כלול בליסינג</label>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="number" id="insurance" value="5500" class="w-20 p-1 border rounded text-xs">
+                    <label class="text-[10px]"><input type="checkbox" id="insIncl"> כלול בליסינג</label>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="number" id="maintenance" value="2000" class="w-20 p-1 border rounded text-xs">
+                    <label class="text-[10px]"><input type="checkbox" id="maintIncl"> כלול בליסינג</label>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                 <input type="number" id="eff" value="18" title="קמ לליטר" class="p-1 border rounded text-xs">
+                 <input type="number" id="gasPrice" value="7.5" title="מחיר דלק" class="p-1 border rounded text-xs">
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            <div class="bg-blue-50 p-6 rounded-3xl border-2 border-blue-200 space-y-4">
-                <h2 class="text-2xl font-black text-blue-900 border-b border-blue-200 pb-2 italic text-center uppercase">רכישה פרטית</h2>
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-blue-100 flex flex-col items-center justify-center min-h-[160px]">
-                    <span class="text-xs font-bold text-blue-400 uppercase">מחיר רכב מקורי</span>
-                    <input type="number" id="price" value="180000" class="text-4xl font-black text-blue-900 bg-transparent text-center focus:outline-none w-full">
-                </div>
-            </div>
-
-            <div class="bg-purple-50 p-6 rounded-3xl border-2 border-purple-200 space-y-4">
-                <h2 class="text-2xl font-black text-purple-900 border-b border-purple-200 pb-2 italic text-center uppercase">ליסינג תפעולי</h2>
-                <div class
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
