@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מנתח החלטה רכב - סנכרון טבלה</title>
+    <title>מערכת ניהול תקציב רכב מקצועית</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -11,79 +11,129 @@
         body { font-family: 'Assistant', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 p-4">
-    <div class="max-w-4xl mx-auto space-y-6">
-        <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200">
-            <h1 class="text-2xl font-black text-slate-800 mb-6">מחשבון TCO מסונכרן לטבלה</h1>
+<body class="bg-slate-100 p-4">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <div class="lg:col-span-1 space-y-4 bg-white p-5 rounded-2xl shadow-md border border-slate-200">
+            <h2 class="text-xl font-bold border-b pb-2">⚙️ הגדרות מודל</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="space-y-3 p-4 bg-blue-50 rounded-xl">
-                    <h3 class="font-bold text-blue-800">רכישה פרטית</h3>
-                    <label class="block text-xs uppercase">מחיר קנייה: <span id="pVal">180000</span></label>
-                    <input type="range" id="price" min="150000" max="210000" step="1000" value="180000" class="w-full">
-                    
-                    <label class="block text-xs uppercase">שווי מכירה (אחרי 3 שנים): <span id="rvVal">110000</span></label>
-                    <input type="range" id="resale" min="80000" max="140000" step="1000" value="110000" class="w-full">
+            <div class="space-y-3 text-sm">
+                <div>
+                    <label class="font-bold">שם הרכב ומודל</label>
+                    <input type="text" id="carModel" value="יונדאי קונה היברידית" class="w-full p-2 border rounded">
                 </div>
-
-                <div class="space-y-3 p-4 bg-slate-50 rounded-xl">
-                    <h3 class="font-bold text-slate-800">הוצאות שנתיות</h3>
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="number" id="gasYear" value="4000" title="דלק" class="p-1 border rounded text-xs">
-                        <input type="number" id="insYear" value="5500" title="ביטוח" class="p-1 border rounded text-xs">
-                        <input type="number" id="maintYear" value="2000" title="טיפולים" class="p-1 border rounded text-xs">
-                        <input type="number" id="testYear" value="2400" title="טסט" class="p-1 border rounded text-xs">
+                <div>
+                    <label class="font-bold">שנים לחישוב: <span id="yearsVal">3</span></label>
+                    <input type="range" id="years" min="1" max="10" value="3" class="w-full">
+                </div>
+                <div>
+                    <label class="font-bold">נסועה שנתית (ק"מ)</label>
+                    <input type="number" id="kmPerYear" value="20000" class="w-full p-2 border rounded">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-xs font-bold">מחיר דלק (₪)</label>
+                        <input type="number" id="fuelPrice" value="7.5" step="0.1" class="w-full p-2 border rounded">
                     </div>
-                    <label class="block text-[10px] text-slate-500 italic">* נתונים שנתיים לפי הטבלה</label>
+                    <div>
+                        <label class="text-xs font-bold">צריכה (ק"מ/ל')</label>
+                        <input type="number" id="efficiency" value="18" class="w-full p-2 border rounded">
+                    </div>
                 </div>
-
-                <div class="space-y-3 p-4 bg-purple-50 rounded-xl">
-                    <h3 class="font-bold text-purple-800">ליסינג</h3>
-                    <label class="block text-xs uppercase">חודשי: <span id="mLeaseVal">2500</span></label>
-                    <input type="range" id="mLease" min="1500" max="4000" step="50" value="2500" class="w-full">
-                    <label class="block text-xs uppercase">מקדמה: 26,000</label>
+                <div>
+                    <label class="font-bold">ריבית שנתית (היוון): <span id="intVal">5</span>%</label>
+                    <input type="range" id="interest" min="0" max="10" step="0.5" value="5" class="w-full">
+                </div>
+                <div>
+                    <label class="font-bold text-red-600">ירידת ערך שנתית: <span id="depVal">12</span>%</label>
+                    <input type="range" id="depreciation" min="5" max="25" value="12" class="w-full">
+                </div>
+                <div class="border-t pt-3 space-y-2">
+                    <label class="font-bold text-blue-600 italic uppercase text-[10px]">הוצאות שנתיות</label>
+                    <input type="number" id="insurance" value="5500" placeholder="ביטוח" class="w-full p-1 border rounded text-xs">
+                    <input type="number" id="registration" value="2400" placeholder="אגרת רישוי" class="w-full p-1 border rounded text-xs">
+                    <input type="number" id="maintenance" value="2000" placeholder="טיפולים" class="w-full p-1 border rounded text-xs">
                 </div>
             </div>
+        </div>
 
-            <div class="h-64 mb-8">
-                <canvas id="chart"></canvas>
+        <div class="lg:col-span-3 space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
+                <h1 class="text-3xl font-black text-slate-800 mb-4" id="titleDisplay"></h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="p-4 bg-blue-50 rounded-xl border border-blue-100">
+                        <label class="text-xs font-bold text-blue-800 uppercase">מחיר רכישה מקורי</label>
+                        <input type="number" id="purchasePrice" value="180000" class="w-full bg-transparent text-2xl font-black focus:outline-none">
+                    </div>
+                    <div class="p-4 bg-purple-50 rounded-xl border border-purple-100">
+                        <label class="text-xs font-bold text-purple-800 uppercase">ליסינג - חודשי</label>
+                        <input type="number" id="leaseMonthly" value="2500" class="w-full bg-transparent text-2xl font-black focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="h-64 mb-6"><canvas id="mainChart"></canvas></div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="mainStats"></div>
             </div>
 
-            <div id="stats" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+            <div class="bg-slate-800 text-white p-6 rounded-2xl">
+                <h3 class="font-bold mb-4 border-b border-slate-700 pb-2">📋 שאלות למשא ומתן</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs" id="negotiationList"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        const ctx = document.getElementById('chart').getContext('2d');
+        const ctx = document.getElementById('mainChart').getContext('2d');
         let chart;
 
         function update() {
-            const P = Number(document.getElementById('price').value);
-            const RV = Number(document.getElementById('resale').value);
-            const years = 3;
-            const r = 0.05;
-
-            // עדכון תוויות
-            document.getElementById('pVal').innerText = P.toLocaleString();
-            document.getElementById('rvVal').innerText = RV.toLocaleString();
-            document.getElementById('mLeaseVal').innerText = document.getElementById('mLease').value;
-
-            // חישוב רווח אבוד (היוון) - בדיוק לפי הנוסחה בטבלה שלך
-            const lostOpp = P * (Math.pow(1 + r, years) - 1);
+            // קליטת נתונים
+            const carName = document.getElementById('carModel').value;
+            const years = Number(document.getElementById('years').value);
+            const km = Number(document.getElementById('kmPerYear').value);
+            const gasPrice = Number(document.getElementById('fuelPrice').value);
+            const eff = Number(document.getElementById('efficiency').value);
+            const r = Number(document.getElementById('interest').value) / 100;
+            const depRate = Number(document.getElementById('depreciation').value) / 100;
+            const P = Number(document.getElementById('purchasePrice').value);
+            const M = Number(document.getElementById('leaseMonthly').value);
             
-            // עלויות שוטפות ל-3 שנים
-            const runningCosts = (
-                Number(document.getElementById('gasYear').value) +
-                Number(document.getElementById('insYear').value) +
-                Number(document.getElementById('maintYear').value) +
-                Number(document.getElementById('testYear').value)
-            ) * years;
+            const ins = Number(document.getElementById('insurance').value);
+            const reg = Number(document.getElementById('registration').value);
+            const maint = Number(document.getElementById('maintenance').value);
 
-            // סה"כ רכישה (TCO)
-            const totalPurchase = (P - RV) + runningCosts + lostOpp;
-            const monthlyPurchase = totalPurchase / (years * 12);
+            // עדכון ויזואלי
+            document.getElementById('titleDisplay').innerText = carName;
+            document.getElementById('yearsVal').innerText = years;
+            document.getElementById('intVal').innerText = (r*100).toFixed(1);
+            document.getElementById('depVal').innerText = (depRate*100).toFixed(0);
 
-            // סה"כ ליסינג (לפי הטבלה: מקדמה + חודשי + ביטוח/טסט + היוון מקדמה)
-            const leaseDown = 26000;
-            const leaseLostOpp = leaseDown * (Math.pow(1 + r, years) - 1);
-            const totalLease = (Number(document.getElementById('mLease
+            // חישובים לוגיים
+            const gasCostPerYear = (km / eff) * gasPrice;
+            const totalRunningCosts = (gasCostPerYear + ins + reg + maint) * years;
+            
+            const futureValue = P * Math.pow(1 - depRate, years); // שווי רכב לאחר X שנים
+            const lostOpp = P * (Math.pow(1 + r, years) - 1); // רווח אבוד
+            
+            const totalTCO_Purchase = (P - futureValue) + totalRunningCosts + lostOpp;
+            const totalTCO_Lease = (M * 12 * years) + 26000 + (ins + reg) * years + (gasCostPerYear * years) + (26000 * (Math.pow(1 + r, years) - 1));
+
+            if (chart) chart.destroy();
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['רכישה פרטית', 'ליסינג'],
+                    datasets: [{
+                        label: 'עלות חודשית ממוצעת',
+                        data: [Math.round(totalTCO_Purchase/(12*years)), Math.round(totalTCO_Lease/(12*years))],
+                        backgroundColor: ['#3b82f6', '#8b5cf6'], borderRadius: 8
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // הצגת 4 החישובים שביקשת
+            document.getElementById('mainStats').innerHTML = `
+                <div class="bg-slate
